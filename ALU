@@ -1,0 +1,75 @@
+module alu #(
+    parameter W = 32
+)(
+    input  [W-1:0] alu_a,
+    input  [W-1:0] alu_b,
+    input  [3:0]   opcode,
+    output reg [W-1:0] result,
+    output reg z,
+    output reg c,
+    output reg v,
+    output reg n
+);
+
+    localparam ADD  = 4'b0000;
+    localparam SUB  = 4'b0001;
+    localparam SLL  = 4'b0010;
+    localparam SLT  = 4'b0011;
+    localparam SLTU = 4'b0100;
+    localparam XOR  = 4'b0101;
+    localparam SRL  = 4'b0110;
+    localparam OR   = 4'b0111;
+    localparam AND  = 4'b1000;
+
+    wire is_sub = (opcode == SUB) || (opcode == SLT);
+
+    wire [W-1:0] b_mux = is_sub ? ~alu_b : alu_b;
+
+    wire [W:0] addsub = alu_a + b_mux + is_sub;
+
+    wire overflow_addsub =
+        (~alu_a[W-1] & ~b_mux[W-1] & addsub[W-1]) |
+        ( alu_a[W-1] &  b_mux[W-1] & ~addsub[W-1]);
+
+    wire carry = addsub[W];
+
+    always @(*) begin
+
+        result = {W{1'b0}};
+        z = 1'b0;
+        n = 1'b0;
+        c = 1'b0;
+        v = 1'b0;
+
+        case (opcode)
+
+            ADD: begin
+                result = addsub[W-1:0];
+                c = carry;
+                v = overflow_addsub;
+            end
+
+            SUB: begin
+                result = addsub[W-1:0];
+                c = carry;
+                v = overflow_addsub;
+            end
+
+            SLL: result = alu_a << alu_b[4:0];
+            SLT: result = {{(W-1){1'b0}}, addsub[W-1] ^ overflow_addsub};
+            SLTU: result = {{(W-1){1'b0}}, ~carry};
+            XOR: result = alu_a ^ alu_b;
+            SRL: result = alu_a >> alu_b[4:0];
+            OR:  result = alu_a | alu_b;
+            AND: result = alu_a & alu_b;
+
+            default: result = {W{1'b0}};
+
+        endcase
+
+        z = ~|result;
+        n = result[W-1];
+
+    end
+
+endmodule
