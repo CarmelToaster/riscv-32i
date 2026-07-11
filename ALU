@@ -11,15 +11,16 @@ module alu #(
     output reg n
 );
 
-    localparam ADD  = 4'b0000;
-    localparam SUB  = 4'b0001;
-    localparam SLL  = 4'b0010;
-    localparam SLT  = 4'b0011;
+    localparam ADD = 4'b0000;
+    localparam SUB = 4'b0001;
+    localparam SLL = 4'b0010;
+    localparam SLT = 4'b0011;
     localparam SLTU = 4'b0100;
-    localparam XOR  = 4'b0101;
-    localparam SRL  = 4'b0110;
-    localparam OR   = 4'b0111;
-    localparam AND  = 4'b1000;
+    localparam XOR = 4'b0101;
+    localparam SRL = 4'b0110;
+    localparam OR = 4'b0111;
+    localparam AND = 4'b1000;
+    localparam SRA = 4'b1110;
 
     wire is_sub = (opcode == SUB) || (opcode == SLT);
 
@@ -62,6 +63,7 @@ module alu #(
             SRL: result = alu_a >> alu_b[4:0];
             OR:  result = alu_a | alu_b;
             AND: result = alu_a & alu_b;
+            SRA: result = $signed(alu_a) >>> alu_b[4:0]; //Fixing signed arith w/o acts as SRL
 
             default: result = {W{1'b0}};
 
