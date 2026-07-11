@@ -36,7 +36,7 @@ module alu #(
 
     always @(*) begin
 
-        result = {W{1'b0}};
+        result = {W{1'b0}}; //Hello World
         z = 1'b0;
         n = 1'b0;
         c = 1'b0;
