@@ -63,7 +63,7 @@ module alu #(
             SRL: result = alu_a >> alu_b[4:0];
             OR:  result = alu_a | alu_b;
             AND: result = alu_a & alu_b;
-            SRA: result = $signed(alu_a) >>> alu_b[4:0];
+            SRA: result = $signed(alu_a) >>> alu_b[4:0]; //Fixing signed arith w/o acts as SRL
 
             default: result = {W{1'b0}};
 
