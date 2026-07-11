@@ -1,0 +1,50 @@
+`timescale 1ns / 1ps
+
+module alu_decoder(
+    input  wire funct7_5, //Bit 30
+    input  wire op5,
+    input  wire [2:0] funct3,
+    input  wire [1:0] alu_op,
+    output reg  [3:0] alu_control
+    );
+
+    localparam ADD = 4'b0000;
+    localparam SUB = 4'b0001;
+    localparam SLL = 4'b0010;
+    localparam SLT = 4'b0011;
+    localparam SLTU = 4'b0100;
+    localparam XOR = 4'b0101;
+    localparam SRL = 4'b0110;
+    localparam OR = 4'b0111;
+    localparam AND = 4'b1000;
+    localparam SRA = 4'b1110; 
+    
+    localparam ALUOp_add = 2'b00;
+    localparam ALUOp_sub = 2'b01;
+    localparam ALUOp_fnct3 = 2'b10;
+    
+    wire sub_type = funct7_5 & op5;
+    wire SR_type =  funct7_5 & op5;
+    
+    always @(*) begin
+    
+        case (alu_op)
+            ALUOp_add: alu_control = ADD;
+            ALUOp_sub: alu_control = SUB;
+            ALUOp_fnct3: begin
+                case (funct3)
+                    3'b000: alu_control = sub_type ? SUB:ADD;  // already done, for reference
+                    3'b001: alu_control = SLL;
+                    3'b010: alu_control = SLT;
+                    3'b011: alu_control = SLTU;
+                    3'b100: alu_control = XOR;
+                    3'b101: alu_control = SR_type ? SRL:SRA; // see the open question below before filling this one in
+                    3'b110: alu_control = OR;
+                    3'b111: alu_control = AND;
+                    default: alu_control = ADD;
+                endcase
+            end
+            default: alu_control = ADD;
+        endcase
+    end
+endmodule
