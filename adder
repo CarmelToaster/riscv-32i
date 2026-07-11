@@ -11,3 +11,7 @@ module adder #(
     assign {cout, sum} = a + b + cin;
 
 endmodule
+
+
+
+// Testbench for the adder module
