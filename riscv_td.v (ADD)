@@ -1,0 +1,26 @@
+`timescale 1ns / 1ps
+
+module riscv_tb;
+
+    reg         clk;
+    reg         reset;
+
+    riscv dut(
+        .clk(clk),
+        .reset(reset)
+    );
+
+    // clock generation
+    initial clk = 0;
+    always #5 clk = ~clk;  
+
+    initial begin
+        reset = 1;
+        #12;           
+        reset = 0;
+
+        #100;          
+        $finish;
+    end
+
+endmodule
