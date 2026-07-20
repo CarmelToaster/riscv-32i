@@ -1,0 +1,26 @@
+`timescale 1ns / 1ps
+
+module control_unit(
+    input wire [6:0] opcode,     
+    input wire [2:0] funct3,     
+    input wire funct7_5,
+    output wire reg_write,
+    output wire alu_src,
+    output wire mem_write,
+    output wire [2:0] result_src,
+    output wire [2:0] imm_src,
+    output wire branch,
+    output wire jump,
+    output wire jalr,
+    output wire [3:0] alu_control      
+    );
+    
+    wire [1:0] alu_op; //input for alu_decoder
+    
+    main_decoder md(
+        .opcode(opcode), .reg_write(reg_write), .alu_src(alu_src), .mem_write(mem_write), .result_src(result_src), .imm_src(imm_src), 
+        .branch(branch), .jump(jump), .jalr(jalr), .alu_op(alu_op));
+        
+    alu_decoder ad(
+        .funct7_5(funct7_5), .op5(opcode[5]), .funct3(funct3), .alu_op(alu_op), .alu_control(alu_control));
+endmodule
