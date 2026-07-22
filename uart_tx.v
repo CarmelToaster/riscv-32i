@@ -25,7 +25,7 @@ module uart_tx (
             end else begin
                 // Output current LSB
                 tx <= shift_reg[0];
-                shift_reg <= {1'b0, shift_reg[9:1]};
+                shift_reg <= {1'b0, shift_reg[13:1]};
             end
         end
     end
