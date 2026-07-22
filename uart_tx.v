@@ -2,7 +2,7 @@ module uart_tx (
     input wire clk,
     input wire reset,
     input wire tx_start,
-    input wire [7:0] tx_data,
+    input wire [13:0] tx_data,
     output reg tx
 );
 
