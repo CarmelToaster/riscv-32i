@@ -38,7 +38,7 @@ module alu_decoder(
                     3'b010: alu_control = SLT;
                     3'b011: alu_control = SLTU;
                     3'b100: alu_control = XOR;
-                    3'b101: alu_control = SR_type ? SRL:SRA; // see the open question below before filling this one in
+                    3'b101: alu_control = SR_type ? SRA : SRL;
                     3'b110: alu_control = OR;
                     3'b111: alu_control = AND;
                     default: alu_control = ADD;
