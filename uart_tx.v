@@ -10,7 +10,7 @@ module uart_tx (
 
     always @(posedge clk) begin
         if (reset) begin
-            shift_reg <= 10'b1111111111;
+            shift_reg <= 14'b11111111111111;
             tx <= 1'b1;  
         end else begin
             if (tx_start) begin
