@@ -6,7 +6,7 @@ module uart_tx (
     output reg tx
 );
 
-    reg [9:0] shift_reg;
+    reg [13:0] shift_reg;
 
     always @(posedge clk) begin
         if (reset) begin
