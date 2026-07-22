@@ -22,7 +22,7 @@ module alu #(
     localparam AND = 4'b1000;
     localparam SRA = 4'b1110;
 
-    wire is_sub = (opcode == SUB) || (opcode == SLT);
+    wire is_sub = (opcode == SUB) || (opcode == SLT) || (opcode == SLTU);
 
     wire [W-1:0] b_mux = is_sub ? ~alu_b : alu_b;
 
